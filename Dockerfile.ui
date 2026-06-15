@@ -1,0 +1,38 @@
+# Hermes Dashboard — servidor Python FastAPI (web_server.py)
+# O dashboard PRECISA do backend Python: injeta session token e serve /api/*
+FROM nikolaik/python-nodejs:python3.11-nodejs20
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONUNBUFFERED=1
+ENV PIP_NO_CACHE_DIR=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git curl build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/hermes
+
+# Clonar hermes-agent
+RUN git clone --depth 1 --branch main https://github.com/NousResearch/hermes-agent.git /opt/hermes \
+    && git config --global --add safe.directory /opt/hermes
+
+# Instalar dependências Python (inclui fastapi + uvicorn para o dashboard)
+RUN pip install --upgrade pip setuptools wheel \
+    && pip install -e . --no-build-isolation \
+    && pip install 'fastapi' 'uvicorn[standard]' 'python-multipart' 'aiofiles'
+
+# Build da web UI (React/Vite → hermes_cli/web_dist)
+WORKDIR /opt/hermes/web
+RUN npm install && npm run build
+
+WORKDIR /opt/hermes
+
+EXPOSE 9119
+
+# Iniciar o servidor dashboard com --insecure para permitir bind 0.0.0.0 sem OAuth
+CMD ["python", "-m", "hermes_cli.main", "dashboard", \
+    "--host", "0.0.0.0", \
+    "--port", "9119", \
+    "--no-open", \
+    "--insecure"]
+

@@ -1,0 +1,40 @@
+FROM nikolaik/python-nodejs:python3.11-nodejs20
+
+ARG HERMES_VERSION=main
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONUNBUFFERED=1
+ENV PIP_NO_CACHE_DIR=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    wget \
+    build-essential \
+    libssl-dev \
+    libffi-dev \
+    python3-dev \
+    pkg-config \
+    cmake \
+    ninja-build \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/hermes
+
+RUN git clone --depth 1 --branch main https://github.com/NousResearch/hermes-agent.git /opt/hermes \
+    && cd /opt/hermes \
+    && git config --global --add safe.directory /opt/hermes
+
+COPY patches/ /opt/hermes/patches/
+RUN cd /opt/hermes && for p in patches/*.patch; do git apply "$p" 2>/dev/null || true; done
+
+RUN pip install --upgrade pip setuptools wheel \
+    && pip install -e '.[messaging,cli]' --no-build-isolation
+
+ENV HF_HOME=/opt/data/hf-cache
+ENV VLLM_CACHE_ROOT=/opt/data/vllm-cache
+
+EXPOSE 8642 5000
+
+COPY scripts/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]

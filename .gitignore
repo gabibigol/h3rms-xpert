@@ -1,0 +1,19 @@
+# Dados persistidos pelo runtime
+logs/
+cache/
+models/
+
+# Secrets (nunca commitar)
+config/.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Docker
+*.tar
+
+# Editor
+.vscode/
