@@ -36,5 +36,6 @@ ENV VLLM_CACHE_ROOT=/opt/data/vllm-cache
 EXPOSE 8642 5000
 
 COPY scripts/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY fix-model.sh /fix-model.sh
+RUN chmod +x /entrypoint.sh /fix-model.sh
 ENTRYPOINT ["/entrypoint.sh"]

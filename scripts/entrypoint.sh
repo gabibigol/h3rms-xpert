@@ -27,6 +27,13 @@ for i in $(seq 1 30); do
 done
 echo ""
 
+# Garantir modelo correto antes de iniciar (previne DeepHat de sobrescrever)
+export HERMES_MODEL="${HERMES_MODEL:-llama3.1:latest}"
+export HERMES_CONTEXT="${HERMES_CONTEXT:-131072}"
+if [ -f /fix-model.sh ]; then
+    bash /fix-model.sh
+fi
+
 echo "🤖 Starting Hermes Gateway..."
 cd /opt/hermes
 exec python -m gateway.run --config /opt/data/config.yaml 2>&1 | tee /opt/data/logs/gateway.log
