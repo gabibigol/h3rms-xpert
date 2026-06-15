@@ -57,6 +57,17 @@ services:
         condition: service_started
     restart: unless-stopped
 
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: hermes-tunnel
+    command: tunnel --url http://hermes-gateway:8642 --no-autoupdate
+    restart: unless-stopped
+    depends_on:
+      hermes:
+        condition: service_started
+    environment:
+      - NO_AUTOUPDATE=true
+
 networks:
   default:
     name: hermes-network

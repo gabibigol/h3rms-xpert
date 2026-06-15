@@ -1,22 +1,22 @@
 model:
   api_mode: chat_completions
   base_url: http://host.docker.internal:11434/v1
-  default: llama3.1:latest
+  default: devstral:latest
   provider: ollama
+  context_length: 131072
   context_compression:
-    model: llama3.1:latest
+    model: devstral:latest
     provider: ollama
     base_url: http://host.docker.internal:11434/v1
   auxiliary:
     vision:
-      model: llama3.1:latest
+      model: devstral:latest
       provider: ollama
       base_url: http://host.docker.internal:11434/v1
     web_extract:
-      model: llama3.1:latest
+      model: devstral:latest
       provider: ollama
       base_url: http://host.docker.internal:11434/v1
-  context_length: 131072
 providers:
   ollama:
     base_url: http://host.docker.internal:11434/v1
@@ -60,14 +60,14 @@ agent:
   image_input_mode: auto
   disabled_toolsets: []
 terminal:
-  backend: local
+  backend: docker
   modal_mode: auto
-  cwd: /opt/hermes
-  timeout: 180
+  cwd: /root
+  timeout: 600
   env_passthrough: []
   shell_init_files: []
   auto_source_bashrc: true
-  docker_image: nikolaik/python-nodejs:python3.11-nodejs20
+  docker_image: kalilinux/kali-rolling
   docker_forward_env: []
   docker_env: {}
   singularity_image: docker://nikolaik/python-nodejs:python3.11-nodejs20
@@ -161,51 +161,51 @@ bedrock:
 auxiliary:
   vision:
     provider: ollama
-    model: llama3.1:latest
-    base_url: ''
+    model: devstral:latest
+    base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 120
     extra_body: {}
     download_timeout: 30
   web_extract:
     provider: ollama
-    model: llama3.1:latest
-    base_url: ''
+    model: devstral:latest
+    base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 360
     extra_body: {}
   compression:
     provider: ollama
-    model: llama3.1:latest
-    base_url: ''
+    model: devstral:latest
+    base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 120
     extra_body: {}
   skills_hub:
     provider: ollama
-    model: llama3.1:latest
-    base_url: ''
+    model: devstral:latest
+    base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 30
     extra_body: {}
   approval:
     provider: ollama
-    model: llama3.1:latest
-    base_url: ''
+    model: devstral:latest
+    base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 30
     extra_body: {}
   mcp:
     provider: ollama
-    model: llama3.1:latest
-    base_url: ''
+    model: devstral:latest
+    base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 30
     extra_body: {}
   title_generation:
     provider: ollama
-    model: llama3.1:latest
-    base_url: ''
+    model: devstral:latest
+    base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 30
     extra_body: {}
@@ -218,29 +218,29 @@ auxiliary:
     extra_body: {}
   triage_specifier:
     provider: ollama
-    model: llama3.1:latest
-    base_url: ''
+    model: devstral:latest
+    base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 120
     extra_body: {}
   kanban_decomposer:
     provider: ollama
-    model: llama3.1:latest
-    base_url: ''
+    model: devstral:latest
+    base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 180
     extra_body: {}
   profile_describer:
     provider: ollama
-    model: llama3.1:latest
-    base_url: ''
+    model: devstral:latest
+    base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 60
     extra_body: {}
   curator:
     provider: ollama
-    model: llama3.1:latest
-    base_url: ''
+    model: devstral:latest
+    base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 600
     extra_body: {}
@@ -574,4 +574,6 @@ platforms:
     enabled: true
     host: 0.0.0.0
     port: 8642
+  webhook:
+    enabled: true
 config_version: 29

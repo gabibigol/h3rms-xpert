@@ -2,7 +2,7 @@
 # fix-model.sh — força llama3.1:latest e limpa qualquer modelo inválido do /opt/data
 set -e
 
-MODEL="${HERMES_MODEL:-llama3.1:latest}"
+MODEL="${HERMES_MODEL:-devstral:latest}"
 CONTEXT="${HERMES_CONTEXT:-131072}"
 BASE_URL="${OPENAI_BASE_URL:-http://host.docker.internal:11434/v1}"
 

@@ -28,7 +28,8 @@ COPY patches/ /opt/hermes/patches/
 RUN cd /opt/hermes && for p in patches/*.patch; do git apply "$p" 2>/dev/null || true; done
 
 RUN pip install --upgrade pip setuptools wheel \
-    && pip install -e '.[messaging,cli]' --no-build-isolation
+    && pip install -e '.[messaging,cli]' --no-build-isolation \
+    && pip install ddgs requests httpx 2>/dev/null || true
 
 ENV HF_HOME=/opt/data/hf-cache
 ENV VLLM_CACHE_ROOT=/opt/data/vllm-cache
