@@ -1,0 +1,104 @@
+FROM kalilinux/kali-rolling
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV GOPATH=/root/go
+ENV PATH=$PATH:/root/go/bin
+
+# Ferramentas de pentest essenciais
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # Recon & scanning
+    nmap \
+    nikto \
+    whatweb \
+    dnsutils \
+    whois \
+    amass \
+    # Web hacking
+    sqlmap \
+    gobuster \
+    ffuf \
+    dirb \
+    wfuzz \
+    burpsuite \
+    # Exploitation
+    metasploit-framework \
+    exploitdb \
+    # Brute force & cracking
+    hydra \
+    john \
+    hashcat \
+    # Sniffing & network
+    ncat \
+    netcat-traditional \
+    socat \
+    tcpdump \
+    wireshark-common \
+    net-tools \
+    iputils-ping \
+    traceroute \
+    masscan \
+    # Languages & utils
+    python3 \
+    python3-pip \
+    python3-venv \
+    ruby \
+    git \
+    curl \
+    wget \
+    jq \
+    vim \
+    tmux \
+    # Wordlists
+    wordlists \
+    seclists \
+    && rm -rf /var/lib/apt/lists/*
+
+# Python tools ofensivos
+RUN pip3 install --break-system-packages --no-cache-dir \
+    requests \
+    httpx \
+    beautifulsoup4 \
+    scapy \
+    impacket \
+    pwntools \
+    paramiko \
+    dnspython \
+    shodan \
+    censys
+
+# Go (para nuclei, subfinder, httpx)
+RUN apt-get update && apt-get install -y --no-install-recommends golang-go \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest 2>/dev/null || true \
+ && go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest 2>/dev/null || true \
+ && go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest 2>/dev/null || true \
+ && go install -v github.com/tomnomnom/waybackurls@latest 2>/dev/null || true \
+ && go install -v github.com/tomnomnom/assetfinder@latest 2>/dev/null || true
+
+# Descompactar rockyou.txt
+RUN gzip -d /usr/share/wordlists/rockyou.txt.gz 2>/dev/null || true
+
+# Script de inicialização com ferramentas prontas
+RUN echo '#!/bin/bash\n\
+export PATH=$PATH:/root/go/bin\n\
+# Atualizar nuclei templates silenciosamente\n\
+nuclei -update-templates -silent 2>/dev/null &\n\
+exec "$@"' > /entrypoint.sh && chmod +x /entrypoint.sh
+
+# Aliases úteis para pentest
+RUN echo '\
+alias nse="nmap --script"\n\
+alias nmapfull="nmap -sV -sC -A -T4 -p-"\n\
+alias nmapquick="nmap -sV -sC -T4 --top-ports 1000"\n\
+alias nmapudp="nmap -sU --top-ports 200"\n\
+alias gobus="gobuster dir -w /usr/share/wordlists/dirb/common.txt"\n\
+alias ffufvhost="ffuf -w /usr/share/wordlists/dirb/common.txt -H '\''Host: FUZZ.TARGET'\''"\n\
+alias sqli="sqlmap --level=5 --risk=3 --batch"\n\
+alias ryo="/usr/share/wordlists/rockyou.txt"\n\
+' >> /root/.bashrc
+
+WORKDIR /root
+ENTRYPOINT ["/bin/bash"]

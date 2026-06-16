@@ -2,7 +2,7 @@
 # fix-model.sh — força o modelo definido e limpa qualquer modelo inválido do /opt/data
 set -e
 
-MODEL="${HERMES_MODEL:-deepseek-r1:32b}"
+MODEL="${HERMES_MODEL:-devstral:latest}"
 CONTEXT="${HERMES_CONTEXT:-131072}"
 BASE_URL="${OPENAI_BASE_URL:-http://host.docker.internal:11434/v1}"
 

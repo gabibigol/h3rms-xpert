@@ -1,4 +1,14 @@
 services:
+  kali-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.kali
+    image: hermes-kali:latest
+    container_name: hermes-kali-builder
+    command: echo "Kali image built successfully"
+    profiles:
+      - build
+
   hermes:
     build:
       context: .

@@ -1,7 +1,7 @@
 model:
   api_mode: chat_completions
   base_url: http://host.docker.internal:11434/v1
-  default: llama3.1:latest
+  default: llama3.1:8b
   provider: ollama
   context_compression:
     model: devstral:latest
@@ -16,7 +16,6 @@ model:
       model: devstral:latest
       provider: ollama
       base_url: http://host.docker.internal:11434/v1
-  context_length: 131072
 providers:
   ollama:
     base_url: http://host.docker.internal:11434/v1
@@ -67,19 +66,25 @@ terminal:
   env_passthrough: []
   shell_init_files: []
   auto_source_bashrc: true
-  docker_image: kalilinux/kali-rolling
+  docker_image: hermes-kali:latest
   docker_forward_env: []
-  docker_env: {}
+  docker_env:
+    PATH: /root/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
   singularity_image: docker://nikolaik/python-nodejs:python3.11-nodejs20
   modal_image: nikolaik/python-nodejs:python3.11-nodejs20
   daytona_image: nikolaik/python-nodejs:python3.11-nodejs20
-  container_cpu: 2
-  container_memory: 8192
+  container_cpu: 4
+  container_memory: 16384
   container_disk: 51200
   container_persistent: true
-  docker_volumes: []
+  docker_volumes:
+  - /opt/data/pentest:/pentest
   docker_mount_cwd_to_workspace: false
-  docker_extra_args: []
+  docker_extra_args:
+  - --cap-add=NET_ADMIN
+  - --cap-add=NET_RAW
+  - --cap-add=SYS_PTRACE
+  - --security-opt=seccomp=unconfined
   docker_run_as_host_user: false
   persistent_shell: true
 web:
