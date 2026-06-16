@@ -1,9 +1,8 @@
 model:
   api_mode: chat_completions
   base_url: http://host.docker.internal:11434/v1
-  default: devstral:latest
+  default: llama3.1:latest
   provider: ollama
-  context_length: 131072
   context_compression:
     model: devstral:latest
     provider: ollama
@@ -17,6 +16,7 @@ model:
       model: devstral:latest
       provider: ollama
       base_url: http://host.docker.internal:11434/v1
+  context_length: 131072
 providers:
   ollama:
     base_url: http://host.docker.internal:11434/v1
@@ -160,51 +160,51 @@ bedrock:
     trace: disabled
 auxiliary:
   vision:
-    provider: ollama
-    model: devstral:latest
+    provider: auto
+    model: ''
     base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 120
     extra_body: {}
     download_timeout: 30
   web_extract:
-    provider: ollama
-    model: devstral:latest
+    provider: auto
+    model: ''
     base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 360
     extra_body: {}
   compression:
-    provider: ollama
-    model: devstral:latest
+    provider: auto
+    model: ''
     base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 120
     extra_body: {}
   skills_hub:
-    provider: ollama
-    model: devstral:latest
+    provider: auto
+    model: ''
     base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 30
     extra_body: {}
   approval:
-    provider: ollama
-    model: devstral:latest
+    provider: auto
+    model: ''
     base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 30
     extra_body: {}
   mcp:
-    provider: ollama
-    model: devstral:latest
+    provider: auto
+    model: ''
     base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 30
     extra_body: {}
   title_generation:
-    provider: ollama
-    model: devstral:latest
+    provider: auto
+    model: ''
     base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 30
@@ -217,29 +217,29 @@ auxiliary:
     timeout: 30
     extra_body: {}
   triage_specifier:
-    provider: ollama
-    model: devstral:latest
+    provider: auto
+    model: ''
     base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 120
     extra_body: {}
   kanban_decomposer:
-    provider: ollama
-    model: devstral:latest
+    provider: auto
+    model: ''
     base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 180
     extra_body: {}
   profile_describer:
-    provider: ollama
-    model: devstral:latest
+    provider: auto
+    model: ''
     base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 60
     extra_body: {}
   curator:
-    provider: ollama
-    model: devstral:latest
+    provider: auto
+    model: ''
     base_url: http://host.docker.internal:11434/v1
     api_key: ''
     timeout: 600

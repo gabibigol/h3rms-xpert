@@ -60,10 +60,12 @@ services:
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: hermes-tunnel
-    command: tunnel --url http://hermes-gateway:8642 --no-autoupdate
+    command: tunnel --url http://hermes-ui:9119 --no-autoupdate
     restart: unless-stopped
     depends_on:
       hermes:
+        condition: service_started
+      ui:
         condition: service_started
     environment:
       - NO_AUTOUPDATE=true
