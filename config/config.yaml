@@ -1,7 +1,7 @@
 model:
   api_mode: chat_completions
   base_url: http://host.docker.internal:11434/v1
-  default: llama3.1:latest
+  default: deepseek-r1:32b
   provider: ollama
   context_length: 131072
   context_compression:
